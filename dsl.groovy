@@ -16,7 +16,7 @@ class Workflow{
   private def split(fs){
     println "Split: " + fs
     //TODO: change to real concurrent code 
-    fs*.call()
+    state = fs*.call(state)
   }
   
     
@@ -24,14 +24,16 @@ class Workflow{
 
 def action1 = {
   println "Action 1"
+  true
 }
 
 def action2 = {
   println "Action 2"
+  [1, 2, 3]
 }
 
 S = new Workflow()
 S >> [ 
 	action1,
         action2
-     ] >> {println "Joined"}  >> {println "Step 2"}
+     ] >> {s -> println s}  >> {println "Step 2"}
