@@ -8,7 +8,7 @@ class Workflow{
     this
   }
 
-  def leftShift(f){
+  def or(f){
      f()
      this
   }
@@ -16,11 +16,7 @@ class Workflow{
   private def split(fs){
     println "Split: " + fs
     //TODO: change to real concurrent code 
-    def it = fs.iterator()
-    while(it.hasNext()){
-      def f = it.next()
-      f()
-    }
+    fs*.call()
   }
   
     
@@ -29,5 +25,5 @@ class Workflow{
 S = new Workflow()
 S >> [ 
       {a -> println "Step 1: Flow 1"},
-      {b -> println "Step 2: Flow 2"}
-     ] << {println "Joined"}  >> [{println "Step 2"}]
+      {b -> println "Step 1: Flow 2"}
+     ] | {println "Joined"}  >> [{println "Step 2"}]
