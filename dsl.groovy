@@ -4,7 +4,11 @@ class Workflow{
   def state = [:]
 
   def rightShift(fs){
-    split(fs)    
+    if (fs instanceof Workflow) {
+      return fs 
+    } else {
+      split(fs)
+    }    
     this
   }
 
@@ -32,8 +36,14 @@ def action2 = {
   [1, 2, 3]
 }
 
+def ifTrue = { condition, closure1, closure2 -> if (condition) closure1.call(); else closure2.call()}
+
 S = new Workflow()
-S >> [ 
+F = new Workflow()
+
+S >> (L1 =[ 
 	action1,
         action2
-     ] >> {s -> println s}  >> {println "Step 2"}
+      ]) >> ifTrue ? {s -> println s}  >> {println "Way 1"} : 
+                   {println "Way 2"}
+           
