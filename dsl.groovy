@@ -8,7 +8,7 @@ class Workflow{
     this
   }
 
-  def or(f){
+  def and(f){
      f()
      this
   }
@@ -22,8 +22,16 @@ class Workflow{
     
 }
 
+def action1 = {
+  println "Action 1"
+}
+
+def action2 = {
+  println "Action 2"
+}
+
 S = new Workflow()
 S >> [ 
-      {a -> println "Step 1: Flow 1"},
-      {b -> println "Step 1: Flow 2"}
-     ] | {println "Joined"}  >> [{println "Step 2"}]
+	action1,
+        action2
+     ] >> {println "Joined"}  >> {println "Step 2"}
